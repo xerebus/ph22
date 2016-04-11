@@ -1,0 +1,85 @@
+\documentclass{article}
+\input{../preamble.tex}
+
+\usepackage{fancyhdr}
+\usepackage{cancel}
+\usepackage[margin=1in, headheight=50pt]{geometry}
+\pagestyle{fancy}
+\lhead{\textbf{Ph22 Set 1}}
+\chead{}
+\rhead{Aritra Biswas}
+\setlength{\headsep}{20pt}
+
+\begin{document}
+
+\section{Convergence of the secant method}
+
+We are trying to find a root of a function $f(x)$. Let $\hat x$ be the
+root we seek, such that $f(\hat x) = 0$. The Newton-Rhaphson method produces
+a series of guesses $x_i$ which iterate as:
+\begin{align}
+    x_{i+1} = x_i - {f(x_i) \over f'(x_i)}.
+\end{align}
+In the secant method, we approximate $f'(x_i)$ using the slope of a secant:
+\begin{align}
+    x_{i+1} = x_i - f(x_i) {x_i - x_{i-1} \over f(x_i) - f(x_{i-1})}.
+\end{align}
+Let $\ep_i \equiv x_i - \hat x$. After our guesses $x_i$ are close, we can
+approximate $f(x_i)$ with a second-order Taylor expansion in the error:
+\begin{align}
+    f(x_i) = f(\hat x + \ep_i)
+    \approx \cancel{f(\hat x)} + \ep_i f'(\hat x)
+    + \ep_i^2 {f''(\hat x) \over 2}.
+\end{align}
+We can express (2) in terms of the errors and use this approximation to
+obtain a recursion relation for the errors $\ep_i$:
+\begin{align}
+    \ep_{i+1} &= \ep_i - f(x_i) {\ep_i - \ep_{i-1} \over f(x_i) - f(x_{i-1})}.
+\end{align}
+Since we only care about the order of convergence, we'll clean this up
+with $A \equiv f'(\hat x)$ and $B \equiv f''(\hat x) / 2$:
+\begin{align}
+    \ep_{i+1} &=
+    \ep_i - (A\ep_i + B\ep_i^2)
+    {
+        \ep_i - \ep_{i-1}
+        \over
+        A(\ep_i - \ep_{i-1}) + B(\ep_i^2 - \ep_{i-1}^2)
+    }
+    \\ &=
+    \ep_i - {A\ep_i + B\ep_i^2 \over A}
+    \left(
+        1
+        \over
+        1 + \eta_i
+    \right)
+    \sp{where}
+    \eta_i \equiv {B \over A} \cdot
+    {\ep_i^2 - \ep_{i-1}^2 \over \ep_i - \ep_{i-1}}
+    \sim \ep_i \tsp{is small}
+    \\ &\approx
+    \ep_i - \left(\ep_i + {B \over A} \ep_i^2\right)
+    \left(
+        1 -
+        {B \over A} \cdot
+        {\ep_i^2 - \ep_{i-1}^2 \over \ep_i - \ep_{i-1}}
+    \right)
+    \\ &=
+    - {B \over A} \ep_i^2 +
+    {B \over A} \left( \ep_i \cdot
+        {\ep_i^2 - \ep_{i-1}^2 \over \ep_i -\ep_{i-1}}
+    \right)
+    +
+    {B^2 \over A^2} \left( \ep_i^2 \cdot
+        {\ep_i^2 - \ep_{i-1}^2 \over \ep_i -\ep_{i-1}}
+    \right)
+\end{align}
+Assume that $\ep_{i+1} = C \ep_i^r$ and thus $\ep_{i-1} = (\ep_i / C)^{1/r}$.
+This gives us:
+
+
+
+
+
+
+\end{document}
