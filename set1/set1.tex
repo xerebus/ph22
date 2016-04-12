@@ -1,5 +1,5 @@
 \documentclass{article}
-\input{../preamble.tex}
+\input{../../preamble.tex}
 
 \usepackage{fancyhdr}
 \usepackage{cancel}
@@ -14,6 +14,12 @@
 
 \section{Convergence of the secant method}
 
+\begin{prop}
+    The order of convergence of the secant method is the golden ratio
+    $\phi = (1 + \sqrt5)/2$.
+\end{prop}
+
+\begin{proof}
 We are trying to find a root of a function $f(x)$. Let $\hat x$ be the
 root we seek, such that $f(\hat x) = 0$. The Newton-Rhaphson method produces
 a series of guesses $x_i$ which iterate as:
@@ -25,7 +31,7 @@ In the secant method, we approximate $f'(x_i)$ using the slope of a secant:
     x_{i+1} = x_i - f(x_i) {x_i - x_{i-1} \over f(x_i) - f(x_{i-1})}.
 \end{align}
 Let $\ep_i \equiv x_i - \hat x$. After our guesses $x_i$ are close, we can
-approximate $f(x_i)$ with a second-order Taylor expansion in the error:
+approximate $f(x_i)$ with a Taylor expansion in the error:
 \begin{align}
     f(x_i) = f(\hat x + \ep_i)
     \approx \cancel{f(\hat x)} + \ep_i f'(\hat x)
@@ -36,47 +42,72 @@ obtain a recursion relation for the errors $\ep_i$:
 \begin{align}
     \ep_{i+1} &= \ep_i - f(x_i) {\ep_i - \ep_{i-1} \over f(x_i) - f(x_{i-1})}.
 \end{align}
-Since we only care about the order of convergence, we'll clean this up
-with $A \equiv f'(\hat x)$ and $B \equiv f''(\hat x) / 2$:
+We'll anticipate
+the geometric nature of the recurrence relation by isolating the ratio
+$\ep_{i + 1} / \ep_i$.
+For simplicity, let's abstract away the constants
+$A \equiv f'(\hat x)$, $B \equiv f''(\hat x) / 2$, and $C \equiv B/A$:
 \begin{align}
-    \ep_{i+1} &=
-    \ep_i - (A\ep_i + B\ep_i^2)
+    {\ep_{i+1} \over \ep_i} &=
+    1 - (A + B\ep_i)
     {
         \ep_i - \ep_{i-1}
         \over
         A(\ep_i - \ep_{i-1}) + B(\ep_i^2 - \ep_{i-1}^2)
-    }
-    \\ &=
-    \ep_i - {A\ep_i + B\ep_i^2 \over A}
-    \left(
+    }.
+\end{align}
+Factoring $\ep_i - \ep_{i-1}$ out of the fraction yields:
+\begin{align}
+    {\ep_{i+1} \over \ep_i} &=
+    1 - (A + B\ep_i)
+    {
         1
         \over
-        1 + \eta_i
-    \right)
-    \sp{where}
-    \eta_i \equiv {B \over A} \cdot
-    {\ep_i^2 - \ep_{i-1}^2 \over \ep_i - \ep_{i-1}}
-    \sim \ep_i \tsp{is small}
-    \\ &\approx
-    \ep_i - \left(\ep_i + {B \over A} \ep_i^2\right)
-    \left(
-        1 -
-        {B \over A} \cdot
-        {\ep_i^2 - \ep_{i-1}^2 \over \ep_i - \ep_{i-1}}
-    \right)
-    \\ &=
-    - {B \over A} \ep_i^2 +
-    {B \over A} \left( \ep_i \cdot
-        {\ep_i^2 - \ep_{i-1}^2 \over \ep_i -\ep_{i-1}}
-    \right)
-    +
-    {B^2 \over A^2} \left( \ep_i^2 \cdot
-        {\ep_i^2 - \ep_{i-1}^2 \over \ep_i -\ep_{i-1}}
-    \right)
+        A + B(\ep_i + \ep_{i-1})
+    }
+    = 1 - (1 + C\ep_i)
+    {
+        1
+        \over
+        1 + C(\ep_i + \ep_{i-1})
+    }.
 \end{align}
-Assume that $\ep_{i+1} = C \ep_i^r$ and thus $\ep_{i-1} = (\ep_i / C)^{1/r}$.
-This gives us:
-
+Here we note that $\eta \equiv C(\ep_i + \ep_{i - 1}) \ll 1$ and
+use $(1 + \eta)^{-1} \approx 1 - \eta$:
+\begin{align}
+    {\ep_{i+1} \over \ep_i} &=
+    1 - (1 + C\ep_i)
+    (1 - C\ep_i - C\ep_{i-1})
+    = 1 - \bigg[1 - C\ep_i - C\ep_{i-1} + C\ep_i + O(\ep_i^2)\bigg]
+    \approx C \ep_{i - 1}.
+\end{align}
+Thus we have our desired recurrence relation:
+\begin{align}
+    \ep_{i + 1} \approx C \ep_i \ep_{i - 1}.
+\end{align}
+Now we assume that $\ep_{i + 1} = D \ep_i^r$ for all $i$, which
+allows us to replace:
+\begin{align}
+    \ep_{i + 1} = D \ep_i^r = D (D \ep_{i - 1}^r)^r =
+    D^{r + 1} \ep_{i - 1}^{r^2}.
+\end{align}
+This yields:
+\begin{align}
+    D^{r + 1} \ep_{i - 1}^{r^2}
+    = C (D \ep_{i-1}^r)\ep_{i - 1}
+    = CD \ep_{i-1}^{r + 1}.
+\end{align}
+Since this equation must be true for all $i$, corresponding
+powers and coefficients of $\ep_{i-1}$ must match and we get:
+\begin{align}
+    D^{r + 1} = CD,
+    \sp{and} r^2 = r + 1.
+\end{align}
+The latter is the defining polynomial for the golden ratio:
+$r = \phi$ is its positive solution. We exclude the negative solution
+since $\ep_i \ll 1$, so $r < 0$ would have $\ep_{i+1} > \ep$ and
+the method would not converge. $\square$
+\end{proof}
 
 
 
