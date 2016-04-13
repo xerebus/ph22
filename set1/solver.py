@@ -53,19 +53,17 @@ def secant(f, x, xn):
 
 if __name__ == "__main__":
 
-    c = 0.03
+    c = 4e-3
     f = lambda x: np.sin(x) - c
     fp = lambda x: np.cos(x)
     sol_anal = np.arcsin(c)
-    sol_bisect = bisection(f, 0, 1)
+    sol_bisect = bisection(f, -0.5, 1)
     sol_newton = newton(f, fp, 1)
-    sol_secant = secant(f, 0, 1)
-    sol_safesc = safe_secant(f, 0, 1)
+    sol_secant = secant(f, -0.5, 1)
 
     print "f(x) = sin(x) - {} = 0".format(c)
     print "Analytical:     {}".format(sol_anal)
     print "Bisection:      {}, error: {}".format(sol_bisect, sol_bisect - sol_anal)
     print "Newton-Raphson: {}, error: {}".format(sol_newton, sol_newton - sol_anal)
     print "Secant:         {}, error: {}".format(sol_secant, sol_secant - sol_anal)
-    print "Safe secant:    {}, error: {}".format(sol_safesc, sol_safesc - sol_anal)
 

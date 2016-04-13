@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.4.5)  12 APR 2016 15:12
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.4.5)  13 APR 2016 01:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1885,14 +1885,17 @@ Package ifvtex Info: VTeX not detected.
 \Gm@layouthoffset=\dimen296
 \Gm@layoutvoffset=\dimen297
 \Gm@dimlist=\toks49
-) (./set1.aux)
+) (./set1.aux
+
+LaTeX Warning: Label `orbit' multiply defined.
+
+)
 \openout1 = `set1.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 13.
 LaTeX Font Info:    Try loading font information for OML+ntxmi on input line 13
 .
-
-(/usr/share/texlive/texmf-dist/tex/latex/newtx/omlntxmi.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/newtx/omlntxmi.fd
 File: omlntxmi.fd 2012/03/22 Fontinst v1.933 font definitions for OML/ntxmi.
 )
 LaTeX Font Info:    ... okay on input line 13.
@@ -2065,31 +2068,64 @@ Package amsmath Warning: Foreign command \over;
 (amsmath)                \frac or \genfrac should be used instead
 (amsmath)                 on input line 28.
 
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+<convergence.pdf, id=4, 578.16pt x 433.62pt>
+File: convergence.pdf Graphic file (type pdf)
+ <use convergence.pdf>
+Package pdftex.def Info: convergence.pdf used on input line 137.
+(pdftex.def)             Requested size: 375.80544pt x 281.84966pt.
+ [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
-] (./set1.aux) ) 
+]
+<orbit.pdf, id=21, 578.16pt x 433.62pt>
+File: orbit.pdf Graphic file (type pdf)
+ <use orbit.pdf>
+Package pdftex.def Info: orbit.pdf used on input line 166.
+(pdftex.def)             Requested size: 375.80544pt x 281.84966pt.
+
+<vr_curve.pdf, id=22, 578.16pt x 433.62pt>
+File: vr_curve.pdf Graphic file (type pdf)
+ <use vr_curve.pdf>
+Package pdftex.def Info: vr_curve.pdf used on input line 172.
+(pdftex.def)             Requested size: 375.80544pt x 281.84966pt.
+ [2 <./convergence.pdf>]
+
+LaTeX Warning: Text page 3 contains only floats.
+
+[3 <./orbit.pdf> <./vr_curve.pdf
+
+pdfTeX warning: pdflatex (file ./vr_curve.pdf): PDF inclusion: multiple pdfs wi
+th page group included in a single page
+>] (./set1.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 27074 strings out of 493304
- 592738 string characters out of 6139872
- 689301 words of memory out of 5000000
- 29942 multiletter control sequences out of 15000+600000
+ 27093 strings out of 493304
+ 593012 string characters out of 6139872
+ 694363 words of memory out of 5000000
+ 29959 multiletter control sequences out of 15000+600000
  41309 words of font info for 88 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  65i,17n,74p,10438b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/latxfont/line10.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/newtx/rntxmi7.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/txfonts/rtxmi.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/txfonts/rtxr.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/public/newtx/txex-bar.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/txfonts/txsy.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/tx
-sya.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/s
-hare/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on set1.pdf (1 page, 52385 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/latxfont/line10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/newtx/rntxmi.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/newtx/rntxmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txf
+onts/rtxb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxmi.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/newtx/txex-bar.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/txfonts/txex.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/txfonts/txsy.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/txfonts/txsya.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/u
+tmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on set1.pdf (3 pages, 205359 bytes).
 PDF statistics:
- 54 PDF objects out of 1000 (max. 8388607)
- 40 compressed objects within 1 object stream
+ 121 PDF objects out of 1000 (max. 8388607)
+ 94 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 13 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 28 words of extra memory for PDF output out of 10000 (max. 10000000)
 

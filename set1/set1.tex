@@ -109,7 +109,71 @@ since $\ep_i \ll 1$, so $r < 0$ would have $\ep_{i+1} > \ep$ and
 the method would not converge. $\square$
 \end{proof}
 
+\section{Testing convergence on root-finding methods}
 
+We define a test function $f_c(x) = \sin x - c$,
+with an analytical root of $\hat x = \arcsin c$. We will test the convergence
+rates of our three root-finding algorithms (bisection, Newton-Rhaphson,
+and secant) on this function with $c = 4 \times 10^{-3}$.
+
+\begin{table}[ht!]\centering
+    \begin{tabular}{l | r | r | r}
+        \textbf{Method} & Initial Guesses & Result & Difference
+        from Analytical\\\hline
+        Analytical & & 0.00400001066674 & 0 \\
+        Bisection & -0.5, 1.0& 0.00400000996888
+        & $-6.97866629068 \times 10^{-10}$ \\
+        Newton-Raphson & 1.0 & 0.00400001066674
+        & $-8.67361737988 \times 10^{-19}$\\
+        Secant & -0.5, 1.0 & 0.00400001066674 & 0.0
+    \end{tabular}
+    \label{results}
+    \caption{Results for $f_c(x) = \sin x - c$
+    with $c = 4 \times 10^{-3}$ and requested
+    tolerance $10^{-8}.$}
+\end{table}
+
+\begin{figure}[ht!]\centering
+    \includegraphics[width=0.8\textwidth]{convergence.pdf}
+    \label{convergence}
+    \caption{Absolute difference $|x_f - \hat x|$,
+        where $x_f$ is the final result and $\hat x$ is the analytical root,
+    as a function of number of iterations for all methods.}
+\end{figure}
+
+\section{Orbit of 1913+16 binary pulsar}
+
+Elliptical orbits can be parametrized in terms of the eccentric anomaly,
+or angle around the ellipse, $\xi$:
+\begin{align}
+    x(\xi) = a(\cos\xi - e),
+    \sp{}
+    y(\xi) = a \sqrt{1 - e^2} \sin\xi,
+    \sp{}
+    t(\xi) = {T \over 2\pi} (\xi - e \sin\xi),
+\end{align}
+where $a$ is the projected semimajor axis, $T$ the period, and $e$
+the eccentricity.
+Since $\xi$ varies from $0$ to $2\pi$, we need not include a time calculation
+to calculate the shape of the orbit. However, to obtain $x(t)$ and $y(t)$
+numerically, we use the secant method to invert the last equation and
+numerically find $\xi(t)$, then inserting this parameter into $x(\xi)$
+and $y(\xi)$. The resulting orbit is shown in Figure 2. A projection angle
+of $\phi = 3\pi / 2$ resulted in the best visual agreement for the
+radial velocity curve, shown in Figure 3.
+
+\begin{figure}[ht!]\centering
+    \includegraphics[width=0.8\textwidth]{orbit.pdf}
+    \label{orbit}
+    \caption{Orbit shape calculated through time.}
+\end{figure}
+
+\begin{figure}[ht!]\centering
+    \includegraphics[width=0.8\textwidth]{vr_curve.pdf}
+    \label{orbit}
+    \caption{Radial velocity curve, projected at a viewing angle
+    of $3\pi/2$.}
+\end{figure}
 
 
 

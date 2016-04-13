@@ -7,7 +7,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-TOLERANCE = 1e-10   # desired precision for the root
+TOLERANCE = 1e-8  # desired precision for the root
 
 def bisection(f, x1, x2, sol_anal):
     '''Given a function f and two initial guesses x1 and x2,
