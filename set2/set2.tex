@@ -1,0 +1,139 @@
+\documentclass{article}
+\input{../../preamble.tex}
+
+\usepackage{fancyhdr}
+\usepackage{cancel}
+\usepackage[margin=1in, headheight=50pt]{geometry}
+\pagestyle{fancy}
+\lhead{\textbf{Ph22 Set 2}}
+\chead{}
+\rhead{Aritra Biswas}
+\setlength{\headsep}{20pt}
+
+\begin{document}
+
+\section{Introduction}
+
+Consider a system of ODEs, potentially coupled and not of the same
+order. We have shown previously that the system can be expressed as a
+system of first-order ODEs, where we define intermediate variables
+for each derivative (e.g. $\xi_0 \equiv x, \xi_1 \equiv x', \xi_2 \equiv
+x''$) and couple them through additional first-order equations
+(e.g. $\xi_1 = \xi_0'$).
+
+Therefore, we've reduced
+the problem to solving a finite number $N$ of coupled first-order ODEs:
+\begin{align}
+    \dd{\vecr\xi}{t} = \vec f\Big( \vecr\xi(t) \Big)
+    \sp{where}
+    \vecr\xi(t) = \Big(\xi_0(t), \xi_1(t), \cdots, \xi_N(t)\Big).
+\end{align}
+In numerical integration, we use a ``step'' method to compute
+$\vecr\xi(t + h)$ using the values of $\vecr\xi(t)$. Given some initial
+values $\vecr\xi(t_0)$ and repeatedly invoking this step, using the
+previous output as the next input, we can compute $\vecr\xi(t_0 + nh)$
+for integer $n$, approximating the function. We consider three different
+step methods:
+
+\subsection{Explicit Euler method}
+
+The explicit Euler method is the simplest: it uses the derivative
+at the beginning of our timestep to compute the value at the end of the
+timestep:
+\begin{align}
+    \vecr\xi(t + h) = \vecr\xi(t) + h\vec f\Big(\vecr\xi(t)\Big).
+\end{align}
+
+\subsection{Explicit Euler method}
+
+The midpoint method first takes a half-step with the explicit Euler method:
+\begin{align}
+    \tilde{\vecr\xi}(t) \equiv \vecr\xi(t) + {h \over 2} \vec f\Big(
+    \vecr\xi(t)\Big),
+\end{align}
+then uses the derivative at the midpoint to advance:
+\begin{align}
+    \vecr\xi(t + h) = \vecr\xi(t) + h\vec f\Big(\tilde{\vecr\xi}(t)\Big).
+\end{align}
+
+\subsection{Fourth-order Runge-Kutta}
+
+The RK4 algorithm calculates the step that would be given by
+the derivative at 4 different intermediate values:
+\begin{align}
+    \vec k_1 &= h \vec f \Big( \vecr\xi(t) \Big), \\
+    \vec k_2 &= h \vec f \left( \vecr\xi(t) + {\vec k_1 \over 2} \right), \\
+    \vec k_3 &= h \vec f \left( \vecr\xi(t) + {\vec k_2 \over 2} \right), \\
+    \vec k_3 &= h \vec f \Big( \vecr\xi(t) + {\vec k_3} \Big), \\
+\end{align}
+then takes a weighted average:
+\begin{align}
+    \vecr\xi(t + h) = \vecr\xi(t) + {\vec k_1 + 2\vec k_2 + 2\vec k_3
+    + \vec k_4 \over 6}.
+\end{align}
+
+\section{Explicit Euler method vs. midpoint method}
+
+We consider an exponential function:
+\begin{align}
+    \dd{y}{t} = y \sp{and} y(0) = 1 \sp{$\implies$}
+    y_{\text{true}}(t) = e^t.
+\end{align}
+We will integrate from $t_0 = 0$ and $t_f = 30$ using the explicit Euler
+and midpoint methods, and compare the global error at the last computed
+time, which is $t_f - h$ rather than $t_f$ because this is more convenient
+in Python:
+\begin{align}
+    \ep \equiv \Big | y_{\text{est}}(t_f - h) -
+    y_{\text{true}}(t_f - h) \Big|.
+\end{align}
+Results are shown in Figure \ref{convergence.pdf}.
+
+\plop{convergence.pdf}{Convergence plot for the explicit Euler and midpoint
+methods, showing the global error $\ep$ (as defined above) as a function
+of the step size $h$. The largest step size tried was $h_0 = 2$
+on an interval $t_f - t_i = 30$, creating interestingly odd behavior
+at large $h$. At small $h$, the explicit Euler method appears linear and
+the midpoint method appears quadratic, as expected. Note that the error
+analysis which led to this expectation assumed $h$ was small when
+truncating Taylor expansions, so it makes sense that we only
+see the expected behavior at small $h$.}
+
+
+\section{Runge-Kutta method on a circular orbit}
+
+Consider an object of mass $m$ under the gravitational influence of a
+mass $M \gg m$. Using natural units $m = M = G = 1$ and Cartesian coordinates,
+the ODEs that describe the object's motion are given by:
+\begin{align}
+    \dot x = v_x,
+    \sp{}
+    \dot y = v_y,
+    \sp{}
+    \dot v_x = -{x \over (x^2 + y^2)^{3/2}},
+    \sp{}
+    \dot v_y = -{y \over (x^2 + y^2)^{3/2}}.
+\end{align}
+We know we will have a circular orbit when the centripetal acceleration
+and gravitational force cancel:
+\begin{align}
+    {v^2 \over R} = {1 \over R^2} \implies v = \sqrt{1 \over R}.
+\end{align}
+Thus we set our initial conditions:
+\begin{align}
+    x(0) = 0,
+    \sp{}
+    y(0) = R,
+    \sp{}
+    v_x(0) = \sqrt{1 \over R},
+    \sp{}
+    v_y(0) = 0,
+\end{align}
+which ensures $\vec r(0) \perp \vec v(0)$. We let $R = 100.0$ and integrate
+from $t_0 = 0$ to a full period at $t_f = T = 2\pi R^{3/2}$ using the RK4
+algorithm. Results for the orbit are shown in figure \ref{orbit.pdf}.
+
+\plop{orbit.pdf}{Circular orbit for $R = 100$, $t_f - t_i = T \approx 6283$,
+using RK4 and a step size $h = 10$.}
+
+\end{document}
