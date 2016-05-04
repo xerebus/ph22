@@ -1,0 +1,136 @@
+\documentclass{article}
+\input{../../preamble.tex}
+
+\usepackage{fancyhdr}
+\usepackage{cancel}
+\usepackage[margin=1in, headheight=50pt]{geometry}
+\pagestyle{fancy}
+\lhead{\textbf{Ph22 Set 3}}
+\chead{}
+\rhead{Aritra Biswas}
+\setlength{\headsep}{20pt}
+
+\begin{document}
+
+
+\section{Restricted three-body problem}
+
+We study an asteroid of mass $m$ in the Jupiter-Sun system (masses $M_1$ and
+$M_2$ respectively). Since $m \ll M_1, M_2$, we approximate Jupiter and the
+Sun as fixed in the corotating frame, which rotates with angular velocity
+$\Omega$:
+\begin{align}
+    \Omega = \sqrt{G(M_1 + M_2) \over R^3},
+    \tsp{where $R_3$ is the Jupiter-Sun separation,}
+\end{align}
+with respect to an inertial frame. In this frame, Jupiter and the Sun are
+fixed at:
+\begin{align}
+    \vec{r_1} = \left( {M_2 R \over M_1 + M_2}, 0 \right),
+    \sp{}
+    \vec{r_2} = \left( -{M_1 R \over M_1 + M_2}, 0 \right).
+\end{align}
+The acceleration of the asteroid at $\vec r = (x, y)$ is given by:
+\begin{align}
+    \vec{\ddot r} =
+    - {GM_1} {\vec r - \vec{r_1} \over |\vec r - \vec{r_1}|^3}
+    - {GM_2} {\vec r - \vec{r_2} \over |\vec r - \vec{r_2}|^3}
+    + 2\Omega (\dot y, -\dot x)
+    + \Omega^2 \vec r,
+\end{align}
+with gravitational contributions from Jupiter and the Sun, a Coriolis force
+contribution, and a centrifugal force contribution. Lagrange's solution
+identifies two \emph{stable} Lagrange points $\vec{L_4}$ and $\vec{L_5}$
+located at:
+\begin{align}
+    \vec{L_{4,5}}
+    = R \left({M_2 - M_1 \over M_1 + M_2} \cos\alpha_{4,5},
+    \sin\alpha_{4,5}\right)
+    \sp{where}
+    \alpha_{4,5} = \pm {\pi \over 3}.
+\end{align}
+To observe the stability of these starting points, we will start our asteroid
+at nearby points $\vec{\tilde L_{4,5}}$ with $\tilde \alpha_{4, 5}
+\equiv \alpha_{4,5} \pm \Delta\alpha$. For small $\Delta\alpha$, we should
+see small oscillations around $\vec{L_{4,5}}$, but for large $\Delta\alpha$,
+we should see more variation in the asteroid's orbit. We use an RK4
+integration routine to evolve the position $\vec r$ of the asteroid over
+several periods $T = 2\pi / \Omega$.
+
+Figures \ref{da_0p01.pdf} through \ref{da_1p5.pdf} show asteroid orbits for
+$\Delta\alpha = 0.01, 0.05, 0.5, 1.5$. No orbit is shown for
+$\Delta\alpha = 0$ because there is none: the asteroid remains stationary
+at its starting position. As expected, the asteroid's orbit amplitude
+increases dramatically with $\Delta\alpha$.
+
+\plop{da_0p01.pdf}{Small-oscillation orbits of an asteroid in the Jupiter-Sun
+    system, placed at starting positions $\vec{\tilde L_{4,5}}$
+    with $\Delta\alpha = 0.01$. Yellow star denotes the Sun, and red circle
+    denotes Jupiter.}
+
+\plop{da_0p05.pdf}{Small-oscillation orbits of an asteroid in the Jupiter-Sun
+    system, placed at starting positions $\vec{\tilde L_{4,5}}$
+    with $\Delta\alpha = 0.05$. Yellow star denotes the Sun, and red circle
+    denotes Jupiter.}
+
+\plop{da_0p5.pdf}{Larger-oscillation orbits of an asteroid in the Jupiter-Sun
+    system, placed at starting positions $\vec{\tilde L_{4,5}}$
+    with $\Delta\alpha = 0.5$. Yellow star denotes the Sun, and red circle
+    denotes Jupiter.}
+ 
+\plop{da_1p5.pdf}{Larger-oscillation orbits of an asteroid in the Jupiter-Sun
+    system, placed at starting positions $\vec{\tilde L_{4,5}}$
+    with $\Delta\alpha = 1.5$. Yellow star denotes the Sun, and red circle
+    denotes Jupiter.}
+
+\section{General three-body problem with equal masses}
+
+In a general multi-body problem, the acceleration of the $i$-th object is
+given by:
+\begin{align}
+    \vec{\ddot r_i} = -G \sum_{j \not= i} M_j {\vec r_i - \vec r_j
+    \over |\vec r_i - \vec r_j|^3}.
+\end{align}
+We consider a case with three bodies of equal mass. We will use natural
+units, where $G = M_{1, 2, 3} = 1$.
+
+\subsection{Lagrange solution}
+
+We want to verify the Lagrange solution, where
+the masses move along the vertices of a rotating equilateral triangle of
+side length $d$ and velocity $v$. First, we will confirm this solution
+analytically.
+
+Let $R \equiv d / \sqrt{3}$, the distance of a point on the equilateral
+triangle from the center. This is the radius of the centripetal motion of
+each mass. Without loss of generality, let one of the masses begin at
+$(x, y) = (0, R)$. By symmetry, the net gravitational force on this mass
+is in the $y$-direction (towards the center) and its magnitude is:
+\begin{align}
+    F = 2 \left(G M^2 \over d^2\right)\cos 30^\circ = 
+    {GM^2 \over d^2} \sqrt 3 = {GM^2 \over dR}.
+\end{align}
+The velocity of centripetal motion is related to the centripetal force by
+$F = v^2 / R$, so:
+\begin{align}
+    v = \sqrt{RF} = \sqrt{GM \over d}.\,\square
+\end{align}
+We simulate this orbit using our RK4 integrator. Initial conditions are:
+\begin{align}
+    (x_i, y_i) = (R\sin\theta_i, R\cos\theta_i),
+    \sp{} (\dot x_i, \dot y_i) = (v\cos\theta_i, -v\sin\theta_i),
+    \sp{with} \{\theta_1, \theta_2, \theta_3\} =
+    \left\{0, {2\pi \over 3}, {4\pi \over 3} \right\}.
+\end{align}
+The result of the simulation is saved in \texttt{lagrange.mp4} in this
+directory.
+
+\subsection{Choreographic orbit}
+
+Using the same RK4 routine, we use the given conditions for a
+choreographic orbit. The simulation result is saved in
+\texttt{choreographic.mp4} in this directory.
+
+
+
+\end{document}
