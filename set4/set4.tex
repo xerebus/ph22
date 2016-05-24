@@ -1,0 +1,109 @@
+\documentclass{article}
+\input{../../preamble.tex}
+
+\usepackage{fancyhdr}
+\usepackage{cancel}
+\usepackage[margin=1in, headheight=50pt]{geometry}
+\pagestyle{fancy}
+\lhead{\textbf{Ph22 Set 4}}
+\chead{}
+\rhead{Aritra Biswas}
+\setlength{\headsep}{20pt}
+
+\begin{document}
+
+\section{Simulation of $N$-body systems}
+
+\subsection{Simulation framework}
+
+We take an object-oriented approach to simulating $N$ bodies under a mutual
+gravitational attraction, although the approach is more general. A
+\texttt{Particle} class holds a 3-dimensional vector position and velocity,
+a mass, and a radius. Methods are included to set a particle's position
+and velocity in both Cartesian and spherical coordinates; the latter is
+particularly useful for generating large numbers of particles distributed
+in a sphere.
+
+\texttt{Particle} objects are contained within a \texttt{Cluster} object
+which is responsible for the interaction between \texttt{Particle} objects.
+\texttt{Cluster} objects also contain a reference to a force function, which
+takes two \texttt{Particle} objects as arguments and returns the force vector
+on the first \texttt{Particle}. In this way, the force mechanism is easily
+expandable: for example, we could add a charge attribute to the
+\texttt{Particle} class and define an \texttt{elec_force(p1, p2)}
+function which uses \texttt{p1.charge} and \texttt{p2.charge}. Then,
+the \texttt{Cluster} could easily include both gravitational and electric
+forces simply by using \texttt{Cluster.force = grav_force + elec_force}.
+
+The \texttt{Cluster} object contains an \texttt{evolve(dt)} method, which
+brute-force calculates the force on every object and evolves their motion
+for a timestep \texttt{dt}. The \texttt{Cluster} can also run a visualization
+of its state using \texttt{vpython}, and can save its state to a file
+using \texttt{cPickle}.
+
+\subsection{Higher-order symplectic Euler method}
+
+In symplectic Euler methods with two dynamical variables, the current value
+of one variable is used to update the other, and then the updated value
+is used to update the former. Thus, we have two possible sympletic Euler
+methods in our case:
+\begin{align}
+    \vec r_{i+1} = \vec r_i + \vec v_i \, dt,
+    \sp{}
+    \vec v_{i+1} = \vec v_i + \vec a(\vec r_{i+1}) \, dt.
+    \\
+    \vec r_{i+1} = \vec r_i + \vec v_{i + 1} \, dt,
+    \sp{}
+    \vec v_{i+1} = \vec v_i + \vec a(\vec r_i) \, dt.
+\end{align}
+The behavior of these numerical integration methods was studied on the
+three-body choreographic orbit (Ph22.3) using visualization. It was observed
+that method (1) resulted in a collapsing orbit, while method (2) resulted
+in an expanding orbit. Inspired by these results, the \texttt{Cluster}
+method employs a higher-order method which alternates the two symplectic
+steps, resulting in a stable three-body choreographic orbit. A visualization
+can be seen using \texttt{vs_sims.py}.
+
+\subsection{Force softening}
+
+Since the gravitational force is inversely proportional to
+$R^2$ where $\vec R \equiv \vec r - \vec r'$ is the separation vector,
+extremely large forces are calculated when the particles come very close
+to each other. In reality, gravity would not be the dominant effect at these
+close distances, as collision and absorption would have to be considered in
+our model. However, in our simplistic model, it is sufficient to prevent the
+simulation from stalling at these distances.
+
+We add a force softening parameter $a$:
+\begin{align}
+    \vec {F'} = {G m_1 m_2 \vec R \over (R + a)^3},
+    \tsp{which under $a \to 0$ reduces to}
+    \vec F = {G m_1 m_2 \vec{\hat R} \over R^2}.
+\end{align}
+This ensures that a finite ``fake force'' is calculated even when the
+particles occupy the same position. We choose $a = 0.1$, $G = 1$ for our
+simulations.
+
+
+\section{Spherical distributions}
+
+Long-timescale simulations were run on two initial conditions: $N = 1000$
+particles distributed in an unit sphere, (1) with unit speeds in random
+directions, and (2) with the particles initially at rest.
+Figures \ref{rand.pdf} and \ref{rest.pdf} show radial position
+distributions of the particles at large timesteps.
+
+\plop{rand.pdf}{Radial position distribution of particles, with particles
+    initially distributed with unit velocities in random directions in
+an unit sphere and evolved for 7000 timesteps.
+The formation of a core in $r < 1000$ and a halo near
+$r = 3000$ is apparent.}
+\plop{rest.pdf}{Radial position distribution of particles, with particles
+    at rest initially distributed uniformly in
+an unit sphere and evolved for 7000 timesteps.
+The formation of a core in $r < 1000$ is still visible, as well as a
+smaller halo at $r = 1500$ and a wider halo at
+$r = 3000$.}
+
+
+\end{document}
