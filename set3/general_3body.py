@@ -84,7 +84,7 @@ def general(x10, y10, x20, y20, x30, y30,
 
     # TIME
     t0 = 0.0
-    tf = 2 * T
+    tf = 3 * T
     h = T / 500
 
     # INTEGRATE
@@ -137,6 +137,36 @@ def movie(x10, y10, x20, y20, x30, y30,
 
     plt.show()
 
+
+def trace(x10, y10, x20, y20, x30, y30,
+          v1x0, v1y0, v2x0, v2y0, v3x0, v3y0):
+    '''Trace out a 3-body simulation with given initial conditions.'''
+
+    fig = plt.figure()
+    ax = plt.axes(xlim=(-1.5, 1.5), ylim=(-1.5, 1.5))
+    (line1, line2, line3) = ax.plot([], [], 'b-',
+                                    [], [], 'r-',
+                                    [], [], 'g-')
+
+    def init():
+        line1.set_data([], [])
+        line2.set_data([], [])
+        line3.set_data([], [])
+        return (line1, line2, line3)
+
+    (xx1, yy1, xx2, yy2, xx3, yy3) = general(x10, y10, x20, y20, x30, y30,
+                                        v1x0, v1y0, v2x0, v2y0, v3x0, v3y0)
+    def update(i):
+        line1.set_data([xx1[0:i]], [yy1[0:i]])
+        line2.set_data([xx2[0:i]], [yy2[0:i]])
+        line3.set_data([xx3[0:i]], [yy3[0:i]])
+        return (line1, line2, line3)
+
+    anim = animation.FuncAnimation(fig, update, init_func=init,
+            frames=1500, interval=30, blit=True)
+
+    plt.show()
+
 def eight():
     
     x30 = 0
@@ -180,7 +210,7 @@ def lagrange():
     v3x0 = v * math.cos(th3)
     v3y0 = -v * math.sin(th3)
 
-    movie(x10, y10, x20, y20, x30, y30,
+    trace(x10, y10, x20, y20, x30, y30,
           v1x0, v1y0, v2x0, v2y0, v3x0, v3y0)
 
 def yin_yang():

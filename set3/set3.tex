@@ -125,6 +125,17 @@ We simulate this orbit using our RK4 integrator. Initial conditions are:
 The result of the simulation is saved in \texttt{lagrange.mp4} in this
 directory.
 
+As with all numerical simulations, our initial conditions are approximations
+to the exact stable parameters. Figure \ref{lag_long.pdf} shows the
+long-term evolution of the system: the bodies eventually leave their
+stable orbit and drift outward.
+
+\plop{lag_long.pdf}{Long-term evolution of the Lagrange solution. The
+    three bodies follow the stable circle for a long time, but eventually
+    drift outwards, as seen in the blue path. The red and green bodies
+    meet during their outward spirals and slingshot off of each other,
+shooting off to infinity.}
+
 \subsection{Choreographic orbit}
 
 Using the same RK4 routine, we use the given conditions for a
