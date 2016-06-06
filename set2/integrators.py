@@ -135,7 +135,8 @@ def convergence_plot():
     plt.show()
 
 
-def orbit():
+def orbit(pds):
+    '''Plot pds full periods of the orbit using RK4 integration.'''
 
     # define ODEs for orbit
     def f(xi):
@@ -161,7 +162,7 @@ def orbit():
     vy0 = 0
 
     # final time and step size
-    tf = 2 * math.pi * math.pow(R, 1.5)
+    tf = 2 * math.pi * math.pow(R, 1.5) * pds
     h = 10
         
     # compute step array
@@ -178,8 +179,7 @@ def orbit():
     plt.plot(xx, yy)
     plt.show()
 
-
 if __name__ == "__main__":
 
-    convergence_plot()
-    orbit()
+    #convergence_plot()
+    orbit(200)
